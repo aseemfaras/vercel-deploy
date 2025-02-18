@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Task Manager</h1>
+        </header>
+        
+        <main>
+            <form class="task-form" action="{{ url_for('add_task') }}" method="POST">
+                <input type="text" name="task" placeholder="Enter a new task..." required>
+                <button type="submit">Add Task</button>
+            </form>
+
+            <div class="tasks-list">
+                {% if tasks %}
+                    {% for task in tasks %}
+                        <div class="task-item {% if task.done %}done{% endif %}">
+                            <span class="task-content">{{ task.content }}</span>
+                            <div class="task-actions">
+                                <span class="task-date">{{ task.created_at }}</span>
+                                <a href="{{ url_for('toggle_task', task_id=task.id) }}" 
+                                   class="toggle-btn">
+                                    {% if task.done %}Undo{% else %}Complete{% endif %}
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p class="no-tasks">No tasks yet! Add some tasks to get started.</p>
+                {% endif %}
+            </div>
+        </main>
+
+        <footer>
+            <p>&copy; 2024 Task Manager. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html> 
